@@ -4,7 +4,7 @@ from customtkinter import *
 from PIL import Image
 
 class MainWindow(CTk):
-    def __init__(self):
+    def __init__(self, username, host, port):
         super().__init__()
         self.geometry('600x500')
         self.label = None
@@ -28,10 +28,10 @@ class MainWindow(CTk):
         self.send_button = CTkButton(self, text='', image=self.send_img, width=50, height=40, command=self.send_message)
         self.send_button.place(x=0, y=0)
 
-        self.username = 'Maksym'
+        self.username = username
         try:
             self.sock = socket(AF_INET, SOCK_STREAM)
-            self.sock.connect(('4.tcp.eu.ngrok.io', 19500))
+            self.sock.connect((host, port))
             hello = f"TEXT@{self.username}@[SYSTEM] {self.username} приєднався(лась) до чату!\n"
             self.sock.send(hello.encode('utf-8'))
             threading.Thread(target=self.recv_message, daemon=True).start()
@@ -133,5 +133,13 @@ class MainWindow(CTk):
             self.add_message(line)
 
 
-win = MainWindow()
-win.mainloop()
+class RegistrWindow(CTk):
+    #Розмір вікна, віджети і як отримати дані нікнейм,хост, порт
+
+    def connect(self):
+        ####
+        ###
+        ###
+        self.destroy()
+        win = MainWindow(username= self.username, host= self.host, port= self.port)
+        win.mainloop()
